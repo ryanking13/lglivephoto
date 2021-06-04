@@ -13,7 +13,15 @@ func TestUnpackSuccess(t *testing.T) {
 	}
 }
 
-func TestPack(t *testing.T) {
+func TestUnpackFail(t *testing.T) {
+	// TODO
+}
+
+func TestPackSuccess(t *testing.T) {
 	// TODO
 	// lglivephoto.Pack("1", "2")
+}
+
+func TestPackFail(t *testing.T) {
+	// TODO
 }
