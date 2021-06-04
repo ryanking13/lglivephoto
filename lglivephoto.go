@@ -5,6 +5,7 @@
 package lglivephoto // import "github.com/ryanking13/lglivephoto"
 
 import (
+	"fmt"
 	"io/ioutil"
 
 	"go.uber.org/zap/zapcore"
@@ -33,7 +34,32 @@ func Unpack(imagePath string) ([]byte, []byte, error) {
 // Pack generates LG Live Photo by embedding the mp4 video to the image,
 func Pack(imagePath string, videoPath string) ([]byte, error) {
 	Logger.Debugf("Start packing: %s to %s", videoPath, imagePath)
-	return nil, nil
+	imageData, err := ioutil.ReadFile(imagePath)
+
+	if err != nil {
+		return nil, err
+	}
+
+	videoData, err := ioutil.ReadFile(videoPath)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if !isJPEG(imageData[0:2]) {
+		return nil, fmt.Errorf("%s is not a JPEG file", imagePath)
+	}
+
+	if !isMP4(videoData[0:8]) {
+		return nil, fmt.Errorf("%s is not a MP4 file", videoPath)
+	}
+
+	_, err = findVideoIndex(imageData)
+	if err == nil {
+		return nil, fmt.Errorf("%s is already a Live Photo", imagePath)
+	}
+
+	return append(imageData, videoData...), nil
 }
 
 func Debug(debug bool) {
