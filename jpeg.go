@@ -2,8 +2,7 @@ package lglivephoto
 
 import (
 	"bytes"
-	"encoding/binary"
-	"errors"
+	"image"
 )
 
 // Referenced from official golang JPEG implementation: https://github.com/golang/go/tree/master/src/image/jpeg
@@ -62,46 +61,18 @@ func isEOI(signature []byte) bool {
 	return bytes.Equal(signature, []byte("\xFF\xD9"))
 }
 
-func isMP4(signature []byte) bool {
-	return bytes.Equal(signature[0:3], []byte("\x00\x00\x00")) && bytes.Equal(signature[4:8], []byte("\x66\x74\x79\x70"))
-}
-
 func isJPEGMarker(signature []byte) bool {
 	_, exists := jpegMarkers[string(signature)]
 	return exists
 }
 
-func findVideoIndex(data []byte) (int, error) {
+func jpegSize(data []byte) (int, int, error) {
+	reader := bytes.NewReader(data)
 
-	if !isJPEG(data[0:2]) {
-		return -1, errors.New("not a JPEG format")
+	img, _, err := image.DecodeConfig(reader)
+	if err != nil {
+		return -1, -1, err
 	}
 
-	appIdx := 2
-	for isJPEGMarker(data[appIdx:appIdx+2]) && !isSOS(data[appIdx:appIdx+2]) {
-		segmentSize := binary.BigEndian.Uint16(data[appIdx+2 : appIdx+4])
-		appIdx += int(segmentSize) + 2
-
-		// fmt.Printf("%x %x %x\n", segmentSize, appIdx, data[appIdx:appIdx+2])
-	}
-
-	// https://stackoverflow.com/questions/26715684/parsing-jpeg-sos-marker
-	eoiIdx := appIdx + 2
-	for !isEOI(data[eoiIdx : eoiIdx+2]) {
-		eoiIdx++
-	}
-
-	videoStartIdx := eoiIdx + 2
-	if videoStartIdx >= len(data) {
-		return -1, errors.New("not a live photo")
-	}
-
-	if !isMP4(data[videoStartIdx : videoStartIdx+4]) {
-		return -1, errors.New(
-			"there is a chunck after JPEG image, but it is not a MP4 file, maybe the image is corrupted. " +
-				"Please report the problem to: https://github.com/ryanking13/lglivephoto/issues",
-		)
-	}
-
-	return videoStartIdx, nil
+	return img.Width, img.Height, nil
 }

@@ -24,11 +24,14 @@ func pack(image string, video string) {
 	livephoto, err := lglivephoto.Pack(image, video)
 	if err != nil {
 		fmt.Printf("[-] Fail (%s / %s): %s\n", image, video, err.Error())
+		return
 	}
 
-	err = ioutil.WriteFile(strings.TrimSuffix(image, filepath.Ext(image))+"_livephoto.jpg", livephoto, 0644)
+	savePath := strings.TrimSuffix(image, filepath.Ext(image)) + "_livephoto.jpg"
+	err = ioutil.WriteFile(savePath, livephoto, 0644)
 	if err != nil {
 		fmt.Printf("[-] Fail (%s / %s): %s\n", image, video, err.Error())
+		return
 	}
 }
 
