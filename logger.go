@@ -7,22 +7,22 @@ import (
 	"go.uber.org/zap/zapcore"
 )
 
-var Logger *zap.SugaredLogger
-var Atom zap.AtomicLevel
+var logger *zap.SugaredLogger
+var atom zap.AtomicLevel
 
 func init() {
-	Atom = zap.NewAtomicLevel()
+	atom = zap.NewAtomicLevel()
 
 	encoderConfig := zap.NewProductionEncoderConfig()
 	encoderConfig.TimeKey = ""
 
-	logger := zap.New(zapcore.NewCore(
+	_logger := zap.New(zapcore.NewCore(
 		zapcore.NewConsoleEncoder(encoderConfig),
 		zapcore.Lock(os.Stdout),
-		Atom,
+		atom,
 	))
-	defer logger.Sync()
+	defer _logger.Sync()
 
-	Atom.SetLevel(zap.InfoLevel)
-	Logger = logger.Sugar()
+	atom.SetLevel(zap.InfoLevel)
+	logger = _logger.Sugar()
 }

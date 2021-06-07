@@ -16,7 +16,7 @@ import (
 // Unpack takes a Live Photo file and extracts it to
 // image and video embedded in the photo.
 func Unpack(imagePath string) ([]byte, []byte, error) {
-	Logger.Debugf("Start unpacking: %s", imagePath)
+	logger.Debugf("Start unpacking: %s", imagePath)
 	data, err := ioutil.ReadFile(imagePath)
 
 	if err != nil {
@@ -29,13 +29,13 @@ func Unpack(imagePath string) ([]byte, []byte, error) {
 		return nil, nil, err
 	}
 
-	Logger.Debugf("Video index of %s = %x", imagePath, idx)
+	logger.Debugf("Video index of %s = %x", imagePath, idx)
 	return data[:idx], data[idx:], nil
 }
 
 // Pack generates LG Live Photo by embedding the mp4 video to the image,
 func Pack(imagePath string, videoPath string) ([]byte, error) {
-	Logger.Debugf("Start packing: %s to %s", videoPath, imagePath)
+	logger.Debugf("Start packing: %s to %s", videoPath, imagePath)
 	imageData, err := ioutil.ReadFile(imagePath)
 
 	if err != nil {
@@ -66,7 +66,7 @@ func Pack(imagePath string, videoPath string) ([]byte, error) {
 
 // IsLivePhoto checks whether given image file is a live photo or not.
 func IsLivePhoto(imagePath string) (bool, error) {
-	Logger.Debugf("Checking whether %s is a live photo", imagePath)
+	logger.Debugf("Checking whether %s is a live photo", imagePath)
 	data, err := ioutil.ReadFile(imagePath)
 
 	if err != nil {
@@ -82,11 +82,12 @@ func IsLivePhoto(imagePath string) (bool, error) {
 	return true, nil
 }
 
+// Debug changes logger verbosity, which is mostly used for debugging.
 func Debug(debug bool) {
 	if debug {
-		Atom.SetLevel(zapcore.DebugLevel)
+		atom.SetLevel(zapcore.DebugLevel)
 	} else {
-		Atom.SetLevel(zapcore.InfoLevel)
+		atom.SetLevel(zapcore.InfoLevel)
 	}
 }
 
