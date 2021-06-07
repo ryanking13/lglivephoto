@@ -1,15 +1,22 @@
 package main
 
 import (
-	"flag"
 	"fmt"
 	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
 
+	flags "github.com/jessevdk/go-flags"
 	"github.com/ryanking13/lglivephoto"
 )
+
+var opts struct {
+	Verbose bool `short:"v" long:"verbose" description:"Show verbose debug information"`
+	Targets struct {
+		Args []string `positional-arg-name:"TARGET"`
+	} `positional-args:"yes" required:"yes" description:"Target livephoto file or directory which contains livephoto files"`
+}
 
 func isDirectory(path string) (bool, error) {
 	fileInfo, err := os.Stat(path)
@@ -20,23 +27,17 @@ func isDirectory(path string) (bool, error) {
 	return fileInfo.IsDir(), nil
 }
 
-func main() {
-	target := flag.String("target", "", "Target livephoto file or directory which contains livephoto files")
-	verbose := flag.Bool("verbose", false, "Print logs (used for debugging)")
+func unpack(target string) {
+	var targets []string
 
-	flag.Parse()
-	lglivephoto.Debug(*verbose)
-
-	isDir, err := isDirectory(*target)
+	isDir, err := isDirectory(target)
 
 	if err != nil {
 		panic(err)
 	}
 
-	var targets []string
-
 	if isDir {
-		targetsPath := fmt.Sprintf("%s/*.jpg", *target)
+		targetsPath := fmt.Sprintf("%s/*.jpg", target)
 		targets, err = filepath.Glob(targetsPath)
 
 		if err != nil {
@@ -44,7 +45,7 @@ func main() {
 		}
 
 	} else {
-		targets = []string{*target}
+		targets = []string{target}
 	}
 
 	for _, targetImage := range targets {
@@ -62,5 +63,34 @@ func main() {
 		if err != nil {
 			fmt.Printf("[-] Fail (%s): %s\n", targetImage, err.Error())
 		}
+	}
+}
+
+func main() {
+
+	if _, err := flags.Parse(&opts); err != nil {
+		switch flagsErr := err.(type) {
+		case *flags.Error:
+			if flagsErr.Type == flags.ErrHelp {
+				os.Exit(0)
+			} else {
+				fmt.Println(err.Error())
+				os.Exit(1)
+			}
+		default:
+			fmt.Println(err.Error())
+			os.Exit(1)
+		}
+	}
+
+	if len(opts.Targets.Args) == 0 {
+		fmt.Println("File or directory not specified, use --help to see usage")
+		os.Exit(1)
+	}
+
+	lglivephoto.Debug(opts.Verbose)
+
+	for _, target := range opts.Targets.Args {
+		unpack(target)
 	}
 }
