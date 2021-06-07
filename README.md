@@ -8,14 +8,19 @@ A Simple golang utility to unpack and pack [LG Live Photo](https://www.lg.com/uk
 
 ## Usage (binary)
 
-Download the binary at [releases](https://github.com/ryanking13/lglivephoto/releases) section.
+For windows (x86_64) download executables below:
+
+- [livephoto-unpack](https://github.com/ryanking13/lglivephoto/releases/download/v0.1.1/livephoto-pack.exe)
+- [livephoto-pack](https://github.com/ryanking13/lglivephoto/releases/download/v0.1.1/livephoto-pack.exe)
+
+For other platforms, download binaries at [releases](https://github.com/ryanking13/lglivephoto/releases) section.
 
 ```bat
-lglivephoto-unpack <livephoto image or directory which contains livephoto images>
+livephoto-unpack <livephoto image or directory which contains livephoto images>
 ```
 
 ```bat
-lglivephoto-pack -template <non-livephoto image> -video <video to be embedded>
+livephoto-pack <non-livephoto image> <video to be embedded>
 ```
 
 ## Usage (module)
