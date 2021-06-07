@@ -93,7 +93,7 @@ func findVideoIndex(data []byte) (int, error) {
 
 	videoStartIdx := eoiIdx + 2
 	if videoStartIdx >= len(data) {
-		return -1, errors.New("no embedded video found")
+		return -1, errors.New("not a live photo")
 	}
 
 	if !isMP4(data[videoStartIdx : videoStartIdx+4]) {

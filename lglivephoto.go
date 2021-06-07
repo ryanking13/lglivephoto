@@ -62,6 +62,24 @@ func Pack(imagePath string, videoPath string) ([]byte, error) {
 	return append(imageData, videoData...), nil
 }
 
+// IsLivePhoto checks whether given image file is a live photo or not.
+func IsLivePhoto(imagePath string) (bool, error) {
+	Logger.Debugf("Checking whether %s is a live photo", imagePath)
+	data, err := ioutil.ReadFile(imagePath)
+
+	if err != nil {
+		return false, err
+	}
+
+	_, err = findVideoIndex(data)
+
+	if err != nil {
+		return false, err
+	}
+
+	return true, nil
+}
+
 func Debug(debug bool) {
 	if debug {
 		Atom.SetLevel(zapcore.DebugLevel)
