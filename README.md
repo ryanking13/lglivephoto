@@ -11,8 +11,8 @@ _NOTE: this module is tested with LG G7._
 
 For windows (x86_64) download executables below:
 
-- [livephoto-unpack](https://github.com/ryanking13/lglivephoto/releases/download/v0.1.1/livephoto-pack.exe)
-- [livephoto-pack](https://github.com/ryanking13/lglivephoto/releases/download/v0.1.1/livephoto-pack.exe)
+- [livephoto-unpack](https://github.com/ryanking13/lglivephoto/releases/download/v0.1.2/livephoto-pack.exe)
+- [livephoto-pack](https://github.com/ryanking13/lglivephoto/releases/download/v0.1.2/livephoto-pack.exe)
 
 For other platforms, download binaries at [releases](https://github.com/ryanking13/lglivephoto/releases) section.
 
