@@ -52,16 +52,19 @@ func unpack(target string) {
 		image, video, err := lglivephoto.Unpack(targetImage)
 		if err != nil {
 			fmt.Printf("[-] Fail (%s): %s\n", targetImage, err.Error())
+			continue
 		}
 
 		err = ioutil.WriteFile(strings.TrimSuffix(targetImage, filepath.Ext(targetImage))+"_unpack.jpg", image, 0644)
 		if err != nil {
 			fmt.Printf("[-] Fail (%s): %s\n", targetImage, err.Error())
+			continue
 		}
 
 		err = ioutil.WriteFile(strings.TrimSuffix(targetImage, filepath.Ext(targetImage))+"_unpack.mp4", video, 0644)
 		if err != nil {
 			fmt.Printf("[-] Fail (%s): %s\n", targetImage, err.Error())
+			continue
 		}
 	}
 }
