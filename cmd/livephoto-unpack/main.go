@@ -14,8 +14,8 @@ import (
 var opts struct {
 	Verbose bool `short:"v" long:"verbose" description:"Show verbose debug information"`
 	Targets struct {
-		Args []string `positional-arg-name:"TARGET"`
-	} `positional-args:"yes" required:"yes" description:"Target livephoto file or directory which contains livephoto files"`
+		Args []string `positional-arg-name:"TARGET" description:"Target livephoto file or directory which contains livephoto files"`
+	} `positional-args:"yes" required:"yes"`
 }
 
 func isDirectory(path string) (bool, error) {
@@ -74,7 +74,7 @@ func main() {
 			if flagsErr.Type == flags.ErrHelp {
 				os.Exit(0)
 			} else {
-				fmt.Println(err.Error())
+				// fmt.Println(err.Error())
 				os.Exit(1)
 			}
 		default:
