@@ -1,17 +1,15 @@
 # LGlivephoto
 
-__WORK IN PROGRESS__
+**_LG smart phone is [dead](https://www.lgnewsroom.com/2021/04/lg-to-close-mobile-phone-business-worldwide/). Long live the Live Photo._**
 
 A Simple golang utility to unpack and pack [LG Live Photo](https://www.lg.com/uk/support/product-help/CT00008356-20150844039308).
 
-**_LG smart phone is [dead](https://www.lgnewsroom.com/2021/04/lg-to-close-mobile-phone-business-worldwide/). Long live the Live Photo._**
-
 ## Usage (binary)
 
-Download the binary [lglivephoto-unpack.exe](), [lglivephoto-pack.exe]().
+Download the binary at [releases](https://github.com/ryanking13/lglivephoto/releases) section.
 
 ```bat
-lglivephoto-unpack -target <livephoto image or directory which contains livephoto images>
+lglivephoto-unpack <livephoto image or directory which contains livephoto images>
 ```
 
 ```bat
@@ -27,7 +25,11 @@ go get -u github.com/ryanking13/lglivephoto
 ```go
 package main
 
-import "github.com/ryanking13/lglivephoto"
+import (
+    "ioutil"
+
+    "github.com/ryanking13/lglivephoto"
+)
 
 func main() {
     image, video, _ := lglivephoto.unpack("livephoto.jpg")
@@ -40,7 +42,3 @@ func main() {
 ```
 
 See [document]() for more information.
-
-## Example
-
-TODO
