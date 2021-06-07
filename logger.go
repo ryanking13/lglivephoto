@@ -17,7 +17,7 @@ func init() {
 	encoderConfig.TimeKey = ""
 
 	logger := zap.New(zapcore.NewCore(
-		zapcore.NewJSONEncoder(encoderConfig),
+		zapcore.NewConsoleEncoder(encoderConfig),
 		zapcore.Lock(os.Stdout),
 		Atom,
 	))
