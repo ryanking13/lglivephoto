@@ -34,18 +34,18 @@ go get -u github.com/ryanking13/lglivephoto
 package main
 
 import (
-    "ioutil"
+	"io/ioutil"
 
-    "github.com/ryanking13/lglivephoto"
+	"github.com/ryanking13/lglivephoto"
 )
 
 func main() {
-    image, video, _ := lglivephoto.unpack("livephoto.jpg")
-    ioutil.WriteFile(image, "livephoto_image.jpg", 0644)
-    ioutil.WriteFile(video, "livephoto_video.mp4", 0644)
+	image, video, _ := lglivephoto.Unpack("livephoto.jpg")
+	ioutil.WriteFile("livephoto_image.jpg", image, 0644)
+	ioutil.WriteFile("livephoto_video.mp4", video, 0644)
 
-    livephoto, _ := lglivephoto.pack("livephoto_image.jpg", "livephoto_video.mp4")
-    ioutil.WriteFile(livephoto, "livephoto_repack.jpg")
+	livephoto, _ := lglivephoto.Pack("livephoto_image.jpg", "livephoto_video.mp4")
+	ioutil.WriteFile("livephoto_repack.jpg", livephoto, 0644)
 }
 ```
 
