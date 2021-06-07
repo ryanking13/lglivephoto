@@ -63,5 +63,9 @@ func Pack(imagePath string, videoPath string) ([]byte, error) {
 }
 
 func Debug(debug bool) {
-	Atom.SetLevel(zapcore.DebugLevel)
+	if debug {
+		Atom.SetLevel(zapcore.DebugLevel)
+	} else {
+		Atom.SetLevel(zapcore.InfoLevel)
+	}
 }
