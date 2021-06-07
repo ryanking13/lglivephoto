@@ -103,5 +103,5 @@ func findVideoIndex(data []byte) (int, error) {
 		)
 	}
 
-	return videoStartIdx - 4, nil
+	return videoStartIdx, nil
 }
