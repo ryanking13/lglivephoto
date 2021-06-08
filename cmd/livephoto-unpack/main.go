@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"sync"
 
 	flags "github.com/jessevdk/go-flags"
 	"github.com/ryanking13/lglivephoto"
@@ -93,7 +94,15 @@ func main() {
 
 	lglivephoto.Debug(opts.Verbose)
 
+	var wg sync.WaitGroup
+	wg.Add(len(opts.Targets.Args))
+
 	for _, target := range opts.Targets.Args {
-		unpack(target)
+		go func(target string) {
+			defer wg.Done()
+			unpack(target)
+		}(target)
 	}
+
+	wg.Wait()
 }
